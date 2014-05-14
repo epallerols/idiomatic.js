@@ -5,7 +5,7 @@ All code in any code-base should look like a single person typed it, no matter h
 ## Table of Contents
 
  * [Whitespace](#whitespace)
- * [Beautiful Syntax](#spacing)
+ * [Syntax](#syntax)
  * [Type Checking (Courtesy jQuery Core Style Guidelines)](#type)
  * [Conditional Evaluation](#cond)
  * [Practical Style](#practical)
@@ -20,211 +20,121 @@ All code in any code-base should look like a single person typed it, no matter h
 ------------------------------------------------
 
 
-## Preface
+## Code styling
 
-The following sections outline a _reasonable_ style guide for modern JavaScript development and are not meant to be prescriptive. The most important take-away is the **law of code style consistency**. Whatever you choose as the style for your project should be considered law. Link to this document as a statement of your project's commitment to code style consistency, readability and maintainability.
+1. <a name="syntax">Beautiful Syntax</a>
 
+    A. Whitespaces
+        - Use always tabs.
+        - Use always double quotes.
+        - Trim trailing white spaces.
 
-
-
-
-## Idiomatic Style Manifesto
-
-
-1. <a name="whitespace">Whitespace</a>
-  - Never mix spaces and tabs.
-  - When beginning a project, before you write any code, choose between soft indents (spaces) or real tabs, consider this **law**.
-      - For readability, I always recommend setting your editor's indent size to two characters &mdash; this means two spaces or two spaces representing a real tab.
-  - If your editor supports it, always work with the "show invisibles" setting turned on. The benefits of this practice are:
-      - Enforced consistency
-      - Eliminating end of line whitespace
-      - Eliminating blank line whitespace
-      - Commits and diffs that are easier to read
-
-
-2. <a name="spacing">Beautiful Syntax</a>
-
-    A. Parens, Braces, Linebreaks
+    B. Parenthesis, Braces and Linebreaks
 
     ```javascript
 
     // if/else/for/while/try always have spaces, braces and span multiple lines
     // this encourages readability
 
-    // 2.A.1.1
-    // Examples of really cramped syntax
+    // Bad
+    if ( condition ) doSomething();
 
-    if(condition) doSomething();
+    // Good
+    if (condition) {
+        doSomething();
+    }
 
-    while(condition) iterating++;
-
+    // Bad
     for(var i=0;i<100;i++) someIterativeFn();
 
+    // Good
+    var i;
 
-    // 2.A.1.1
-    // Use whitespace to promote readability
-
-    if ( condition ) {
-      // statements
+    for (i=0; i<100; i++) {
+        someIterativeFn();
     }
 
-    while ( condition ) {
-      // statements
-    }
-
-    for ( var i = 0; i < 100; i++ ) {
-      // statements
-    }
-
-    // Even better:
-
-    var i,
-      length = 100;
-
-    for ( i = 0; i < length; i++ ) {
-      // statements
-    }
-
-    // Or...
-
-    var i = 0,
-      length = 100;
-
-    for ( ; i < length; i++ ) {
-      // statements
-    }
-
-    var prop;
-
-    for ( prop in object ) {
-      // statements
-    }
-
-
-    if ( true ) {
-      // statements
-    } else {
-      // statements
-    }
     ```
 
-
-    B. Assignments, Declarations, Functions ( Named, Expression, Constructor )
+    C. Assignments, Declarations
 
     ```javascript
 
-    // 2.B.1.1
-    // Variables
+    // Bad
     var foo = "bar",
-      num = 1,
-      undef;
-
-    // Literal notations:
-    var array = [],
-      object = {};
-
-
-    // 2.B.1.2
-    // Using only one `var` per scope (function) promotes readability
-    // and keeps your declaration list free of clutter (also saves a few keystrokes)
+        num,
+        arr = [1,2,3];
 
     // Bad
     var foo = "";
-    var bar = "";
-    var qux;
+    var num = 3;
+    var arr = [1,2,3];
 
     // Good
-    var foo = "",
-      bar = "",
-      quux;
+    var foo = "bar",
+        num = 1,
+        arr = [1,2,3];
 
-    // or..
-    var // Comment on these
-    foo = "",
-    bar = "",
-    quux;
+    // also good
+    var foo, num, arr;
 
-    // 2.B.1.3
+    // Bad
+    var array = new Array(),
+        object = new Object();
+
+    // Good
+    var array = [],
+        object = {};
+
     // var statements should always be in the beginning of their respective scope (function).
-    
 
     // Bad
     function foo() {
 
       // some statements here
 
-      var bar = "",
-        qux;
+      var bar = "";
     }
 
     // Good
     function foo() {
-      var bar = "",
-        qux;
+      var bar = "";
 
       // all statements after the variables declarations.
     }
-    
-    // 2.B.1.4
-    // const and let, from ECMAScript 6, should likewise be at the top of their scope (block).
-    
-    // Bad
-    function foo() {
-      let foo,
-        bar;
-      if (condition) {
-        bar = "";
-        // statements
-      }
-    }
-    // Good
-    function foo() {
-      let foo;
-      if (condition) {
-        let bar = "";
-        // statements
-      }
-    }
+
     ```
+
+    D. Functions ( Named, Expression, Constructor )
 
     ```javascript
 
-    // 2.B.2.1
     // Named Function Declaration
-    function foo( arg1, argN ) {
+    function foo(arg1, argN) {
 
     }
-
     // Usage
-    foo( arg1, argN );
-
-
-    // 2.B.2.2
-    // Named Function Declaration
-    function square( number ) {
-      return number * number;
-    }
-
-    // Usage
-    square( 10 );
+    foo(arg1, argN);
 
     // Really contrived continuation passing style
-    function square( number, callback ) {
-      callback( number * number );
+    function square(number, callback) {
+      callback(number * number);
     }
 
-    square( 10, function( square ) {
+    square(10, function(square) {
       // callback statements
     });
 
-
-    // 2.B.2.3
     // Function Expression
     var square = function( number ) {
       // Return something valuable and relevant
       return number * number;
     };
 
+    // UNAPPROVED
+    // Useful for functions that call itself, but I think it can be
+    // removed from here
+    /*
     // Function Expression with Identifier
     // This preferred form has the added value of being
     // able to call itself and have an identity in stack traces:
@@ -235,91 +145,25 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
       return number * factorial( number - 1 );
     };
+    */
 
-
-    // 2.B.2.4
     // Constructor Declaration
-    function FooBar( options ) {
-
+    function FooBar(options) {
       this.options = options;
     }
 
     // Usage
-    var fooBar = new FooBar({ a: "alpha" });
-
+    var fooBar = new FooBar({a: "alpha"});
     fooBar.options;
     // { a: "alpha" }
 
-    ```
-
-
-    C. Exceptions, Slight Deviations
-
-    ```javascript
-
-    // 2.C.1.1
     // Functions with callbacks
     foo(function() {
       // Note there is no extra space between the first paren
       // of the executing function call and the word "function"
     });
 
-    // Function accepting an array, no space
-    foo([ "alpha", "beta" ]);
-
-    // 2.C.1.2
-    // Function accepting an object, no space
-    foo({
-      a: "alpha",
-      b: "beta"
-    });
-
-    // Single argument string literal, no space
-    foo("bar");
-
-    // Inner grouping parens, no space
-    if ( !("foo" in obj) ) {
-
-    }
-
     ```
-
-    D. Consistency Always Wins
-
-    In sections 2.A-2.C, the whitespace rules are set forth as a recommendation with a simpler, higher purpose: consistency.
-    It's important to note that formatting preferences, such as "inner whitespace" should be considered optional, but only one style should exist across the entire source of your project.
-
-    ```javascript
-
-    // 2.D.1.1
-
-    if (condition) {
-      // statements
-    }
-
-    while (condition) {
-      // statements
-    }
-
-    for (var i = 0; i < 100; i++) {
-      // statements
-    }
-
-    if (true) {
-      // statements
-    } else {
-      // statements
-    }
-
-    ```
-
-    E. Quotes
-
-    Whether you prefer single or double shouldn't matter, there is no difference in how JavaScript parses them. What **ABSOLUTELY MUST** be enforced is consistency. **Never mix quotes in the same project. Pick one style and stick with it.**
-
-    F. End of Lines and Empty Lines
-
-    Whitespace can ruin diffs and make changesets impossible to read. Consider incorporating a pre-commit hook that removes end-of-line whitespace and blanks spaces on empty lines automatically.
 
 3. <a name="type">Type Checking (Courtesy jQuery Core Style Guidelines)</a>
 
@@ -343,7 +187,7 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
     Array:
 
-        Array.isArray( arrayLikeObject )
+        Array.isArray(arrayLikeObject)
         (wherever possible)
 
     Node:
@@ -354,9 +198,10 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
         variable === null
 
-    null or undefined:
+    null or undefined (do no use the short version):
 
-        variable == null
+        variable == null                                // Bad
+        variable === null || variable === undefined     // Good
 
     undefined:
 
@@ -371,7 +216,7 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
       Properties:
 
         object.prop === undefined
-        object.hasOwnProperty( prop )
+        object.hasOwnProperty(prop)
         "prop" in object
 
     B. Coerced Types
@@ -1182,11 +1027,9 @@ The following sections outline a _reasonable_ style guide for modern JavaScript 
 
 ## Appendix
 
-### Comma First.
+### JSHint file
 
-Any project that cites this document as its base style guide will not accept comma first code formatting, unless explicitly specified otherwise by that project's author.
-
-
+// code
 
 ----------
 
