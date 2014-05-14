@@ -22,20 +22,19 @@ All code in any code-base should look like a single person typed it, no matter h
 
 ## Code styling
 
-1. <a name="syntax">Beautiful Syntax</a>
+1. <a name="syntax">Syntax</a>
 
     A. Whitespaces
-        - Use always tabs.
-        - Use always double quotes.
-        - Trim trailing white spaces.
+
+    - Use always tabs.
+    - Use always double quotes.
+    - Trim trailing white spaces.
 
     B. Parenthesis, Braces and Linebreaks
 
+    `if`/`else`/`for`/`while`/`try` always have spaces, braces and span multiple lines this encourages readability.
+
     ```javascript
-
-    // if/else/for/while/try always have spaces, braces and span multiple lines
-    // this encourages readability
-
     // Bad
     if ( condition ) doSomething();
 
@@ -50,13 +49,16 @@ All code in any code-base should look like a single person typed it, no matter h
     // Good
     var i;
 
-    for (i=0; i<100; i++) {
+    for (i = 0; i < 100; i++) {
         someIterativeFn();
     }
-
     ```
 
     C. Assignments, Declarations
+    - Do not expose local variables to the global scope.
+    - Use only one `var` per scope (function) promotes readability.
+    - `var` statements should always be in the beginning of their respective scope.
+    - Prefer literal notation over object notation.
 
     ```javascript
 
@@ -86,11 +88,8 @@ All code in any code-base should look like a single person typed it, no matter h
     var array = [],
         object = {};
 
-    // var statements should always be in the beginning of their respective scope (function).
-
     // Bad
     function foo() {
-
       // some statements here
 
       var bar = "";
@@ -101,6 +100,18 @@ All code in any code-base should look like a single person typed it, no matter h
       var bar = "";
 
       // all statements after the variables declarations.
+    }
+
+    // Bad
+    function foo() {
+      bar = "";
+      // some statements here
+    }
+
+    // Good
+    function foo() {
+      var bar = "";
+      // some statements here
     }
 
     ```
