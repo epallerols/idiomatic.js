@@ -56,7 +56,7 @@ All code in any code-base should look like a single person typed it, no matter h
 
     C. Assignments, Declarations
     - Do not expose local variables to the global scope.
-    - Use only one `var` per scope (function) promotes readability.
+    - Use only one `var` per scope (function).
     - `var` statements should always be in the beginning of their respective scope.
     - Prefer literal notation over object notation.
 
@@ -124,6 +124,7 @@ All code in any code-base should look like a single person typed it, no matter h
     function foo(arg1, argN) {
 
     }
+
     // Usage
     foo(arg1, argN);
 
@@ -137,7 +138,7 @@ All code in any code-base should look like a single person typed it, no matter h
     });
 
     // Function Expression
-    var square = function( number ) {
+    var square = function(number) {
       // Return something valuable and relevant
       return number * number;
     };
@@ -149,12 +150,12 @@ All code in any code-base should look like a single person typed it, no matter h
     // Function Expression with Identifier
     // This preferred form has the added value of being
     // able to call itself and have an identity in stack traces:
-    var factorial = function factorial( number ) {
-      if ( number < 2 ) {
+    var factorial = function factorial(number) {
+      if (number < 2) {
         return 1;
       }
 
-      return number * factorial( number - 1 );
+      return number * factorial(number - 1);
     };
     */
 
@@ -198,8 +199,7 @@ All code in any code-base should look like a single person typed it, no matter h
 
     Array:
 
-        Array.isArray(arrayLikeObject)
-        (wherever possible)
+        $.isArray(arrayLikeObject)
 
     Node:
 
