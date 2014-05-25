@@ -144,7 +144,7 @@ All code in any code-base should look like a single person typed it, no matter h
     };
 
     // UNAPPROVED
-    // Useful for functions that call itself, but I think it can be
+    // Useful for functions that call themself, but I think it can be
     // removed from here
     /*
     // Function Expression with Identifier
@@ -262,10 +262,8 @@ All code in any code-base should look like a single person typed it, no matter h
     // If you were to test `typeof foo` now, the result would be `string`
     // This means that if you had logic that tested `foo` like:
 
-    if ( foo === 1 ) {
-
+    if (foo === 1) {
       importantTask();
-
     }
 
     // `importantTask()` would never be evaluated, even though `foo` has a value of "1"
@@ -281,10 +279,8 @@ All code in any code-base should look like a single person typed it, no matter h
     // typeof foo;
     // "number"
 
-    if ( foo === 1 ) {
-
+    if (foo === 1) {
       importantTask();
-
     }
 
     // `importantTask()` will be called
@@ -362,72 +358,18 @@ All code in any code-base should look like a single person typed it, no matter h
     ```javascript
     // 3.B.2.3
 
-    var array = [ "a", "b", "c" ];
+    var array = ["a", "b", "c"];
 
-    !!~array.indexOf("a");
-    // true
-
-    !!~array.indexOf("b");
-    // true
-
-    !!~array.indexOf("c");
-    // true
-
-    !!~array.indexOf("d");
-    // false
+    !!~array.indexOf("a");  // true
 
     // Note that the above should be considered "unnecessarily clever"
     // Prefer the obvious approach of comparing the returned value of
     // indexOf, like:
 
-    if ( array.indexOf( "a" ) >= 0 ) {
+    if (array.indexOf("a") >= 0) {
       // ...
     }
     ```
-
-    ```javascript
-    // 3.B.2.4
-
-
-    var num = 2.5;
-
-    parseInt( num, 10 );
-
-    // is the same as...
-
-    ~~num;
-
-    num >> 0;
-
-    num >>> 0;
-
-    // All result in 2
-
-
-    // Keep in mind however, that negative numbers will be treated differently...
-
-    var neg = -2.5;
-
-    parseInt( neg, 10 );
-
-    // is the same as...
-
-    ~~neg;
-
-    neg >> 0;
-
-    // All result in -2
-    // However...
-
-    neg >>> 0;
-
-    // Will result in 4294967294
-
-
-
-
-    ```
-
 
 
 4. <a name="cond">Conditional Evaluation</a>
@@ -437,72 +379,59 @@ All code in any code-base should look like a single person typed it, no matter h
     // 4.1.1
     // When only evaluating that an array has length,
     // instead of this:
-    if ( array.length > 0 ) ...
+    if (array.length > 0) ...
 
     // ...evaluate truthiness, like this:
-    if ( array.length ) ...
+    if (array.length) ...
 
 
     // 4.1.2
     // When only evaluating that an array is empty,
     // instead of this:
-    if ( array.length === 0 ) ...
+    if (array.length === 0) ...
 
     // ...evaluate truthiness, like this:
-    if ( !array.length ) ...
+    if (!array.length) ...
 
 
     // 4.1.3
     // When only evaluating that a string is not empty,
     // instead of this:
-    if ( string !== "" ) ...
+    if (string !== "") ...
 
     // ...evaluate truthiness, like this:
-    if ( string ) ...
+    if (string) ...
 
 
     // 4.1.4
     // When only evaluating that a string _is_ empty,
     // instead of this:
-    if ( string === "" ) ...
+    if (string === "") ...
 
     // ...evaluate falsy-ness, like this:
-    if ( !string ) ...
+    if (!string) ...
 
 
     // 4.1.5
     // When only evaluating that a reference is true,
     // instead of this:
-    if ( foo === true ) ...
+    if (foo === true) ...
 
     // ...evaluate like you mean it, take advantage of built in capabilities:
-    if ( foo ) ...
+    if (foo) ...
 
 
     // 4.1.6
     // When evaluating that a reference is false,
     // instead of this:
-    if ( foo === false ) ...
+    if (foo === false) ...
 
     // ...use negation to coerce a true evaluation
-    if ( !foo ) ...
+    if (!foo) ...
 
     // ...Be careful, this will also match: 0, "", null, undefined, NaN
     // If you _MUST_ test for a boolean false, then use
-    if ( foo === false ) ...
-
-
-    // 4.1.7
-    // When only evaluating a ref that might be null or undefined, but NOT false, "" or 0,
-    // instead of this:
-    if ( foo === null || foo === undefined ) ...
-
-    // ...take advantage of == type coercion, like this:
-    if ( foo == null ) ...
-
-    // Remember, using == will match a `null` to BOTH `null` and `undefined`
-    // but not `false`, "" or 0
-    null == undefined
+    if (foo === false) ...
 
     ```
     ALWAYS evaluate for the best, most accurate result - the above is a guideline, not a dogma.
@@ -528,98 +457,12 @@ All code in any code-base should look like a single person typed it, no matter h
     // 4.2.2
     // Booleans, Truthies & Falsies
 
-    // Booleans:
-    true, false
-
-    // Truthy:
-    "foo", 1
-
     // Falsy:
-    "", 0, null, undefined, NaN, void 0
+    "", 0, null, undefined, NaN, false, void 0
+
+    // Any other return true
 
     ```
-
-
-5. <a name="practical">Practical Style</a>
-
-    ```javascript
-
-    // 5.1.1
-    // A Practical Module
-
-    (function( global ) {
-      var Module = (function() {
-
-        var data = "secret";
-
-        return {
-          // This is some boolean property
-          bool: true,
-          // Some string value
-          string: "a string",
-          // An array property
-          array: [ 1, 2, 3, 4 ],
-          // An object property
-          object: {
-            lang: "en-Us"
-          },
-          getData: function() {
-            // get the current value of `data`
-            return data;
-          },
-          setData: function( value ) {
-            // set the value of `data` and return it
-            return ( data = value );
-          }
-        };
-      })();
-
-      // Other things might happen here
-
-      // expose our module to the global object
-      global.Module = Module;
-
-    })( this );
-
-    ```
-
-    ```javascript
-
-    // 5.2.1
-    // A Practical Constructor
-
-    (function( global ) {
-
-      function Ctor( foo ) {
-
-        this.foo = foo;
-
-        return this;
-      }
-
-      Ctor.prototype.getFoo = function() {
-        return this.foo;
-      };
-
-      Ctor.prototype.setFoo = function( val ) {
-        return ( this.foo = val );
-      };
-
-
-      // To call constructor's without `new`, you might do this:
-      var ctor = function( foo ) {
-        return new Ctor( foo );
-      };
-
-
-      // expose our constructor to the global object
-      global.ctor = ctor;
-
-    })( this );
-
-    ```
-
-
 
 6. <a name="naming">Naming</a>
 
@@ -650,8 +493,8 @@ All code in any code-base should look like a single person typed it, no matter h
     // 6.A.2.1
     // Example of code with improved names
 
-    function query( selector ) {
-      return document.querySelectorAll( selector );
+    function query(selector) {
+      return document.querySelectorAll(selector);
     }
 
     var idx = 0,
@@ -659,8 +502,8 @@ All code in any code-base should look like a single person typed it, no matter h
       matches = query("#foo"),
       length = matches.length;
 
-    for ( ; idx < length; idx++ ) {
-      elements.push( matches[ idx ] );
+    for (idx = 0; idx < length; idx++) {
+      elements.push(matches[idx]);
     }
 
     ```
@@ -713,99 +556,6 @@ All code in any code-base should look like a single person typed it, no matter h
 
     B. Faces of `this`
 
-    Beyond the generally well known use cases of `call` and `apply`, always prefer `.bind( this )` or a functional equivalent, for creating `BoundFunction` definitions for later invocation. Only resort to aliasing when no preferable option is available.
-
-    ```javascript
-
-    // 6.B.1
-    function Device( opts ) {
-
-      this.value = null;
-
-      // open an async stream,
-      // this will be called continuously
-      stream.read( opts.path, function( data ) {
-
-        // Update this instance's current value
-        // with the most recent value from the
-        // data stream
-        this.value = data;
-
-      }.bind(this) );
-
-      // Throttle the frequency of events emitted from
-      // this Device instance
-      setInterval(function() {
-
-        // Emit a throttled event
-        this.emit("event");
-
-      }.bind(this), opts.freq || 100 );
-    }
-
-    // Just pretend we've inherited EventEmitter ;)
-
-    ```
-
-    When unavailable, functional equivalents to `.bind` exist in many modern JavaScript libraries.
-
-
-    ```javascript
-    // 6.B.2
-
-    // eg. lodash/underscore, _.bind()
-    function Device( opts ) {
-
-      this.value = null;
-
-      stream.read( opts.path, _.bind(function( data ) {
-
-        this.value = data;
-
-      }, this) );
-
-      setInterval(_.bind(function() {
-
-        this.emit("event");
-
-      }, this), opts.freq || 100 );
-    }
-
-    // eg. jQuery.proxy
-    function Device( opts ) {
-
-      this.value = null;
-
-      stream.read( opts.path, jQuery.proxy(function( data ) {
-
-        this.value = data;
-
-      }, this) );
-
-      setInterval( jQuery.proxy(function() {
-
-        this.emit("event");
-
-      }, this), opts.freq || 100 );
-    }
-
-    // eg. dojo.hitch
-    function Device( opts ) {
-
-      this.value = null;
-
-      stream.read( opts.path, dojo.hitch( this, function( data ) {
-
-        this.value = data;
-
-      }) );
-
-      setInterval( dojo.hitch( this, function() {
-
-        this.emit("event");
-
-      }), opts.freq || 100 );
-    }
 
     ```
 
@@ -834,37 +584,6 @@ All code in any code-base should look like a single person typed it, no matter h
     }
 
     ```
-
-
-    C. Use `thisArg`
-
-    Several prototype methods of ES 5.1 built-ins come with a special `thisArg` signature, which should be used whenever possible
-
-    ```javascript
-
-    // 6.C.1
-
-    var obj;
-
-    obj = { f: "foo", b: "bar", q: "qux" };
-
-    Object.keys( obj ).forEach(function( key ) {
-
-      // |this| now refers to `obj`
-
-      console.log( this[ key ] );
-
-    }, obj ); // <-- the last arg is `thisArg`
-
-    // Prints...
-
-    // "foo"
-    // "bar"
-    // "qux"
-
-    ```
-
-    `thisArg` can be used with `Array.prototype.every`, `Array.prototype.forEach`, `Array.prototype.some`, `Array.prototype.map`, `Array.prototype.filter`
 
 7. <a name="misc">Misc</a>
 
@@ -985,10 +704,10 @@ All code in any code-base should look like a single person typed it, no matter h
 
     // 7.B.1.1
     // Bad:
-    function returnLate( foo ) {
+    function returnLate(foo) {
       var ret;
 
-      if ( foo ) {
+      if (foo) {
         ret = "foo";
       } else {
         ret = "quux";
@@ -998,9 +717,9 @@ All code in any code-base should look like a single person typed it, no matter h
 
     // Good:
 
-    function returnEarly( foo ) {
+    function returnEarly(foo) {
 
-      if ( foo ) {
+      if (foo) {
         return "foo";
       }
       return "quux";
